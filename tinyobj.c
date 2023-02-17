@@ -12,9 +12,6 @@
 #define DEFAULT_CHUNK_SIZE 100
 
 
-void _dev_log(tobj_model *model);
-
-
 
 tobj_model* tobj_load_model(const char *filename, bool has_texture) {
 	tobj_model* model = NULL;
@@ -157,7 +154,6 @@ tobj_model* tobj_load_model(const char *filename, bool has_texture) {
 tt_color tobj_diffuse(tobj_model *model, Vec2i uv) {
     assert(model != NULL);
     assert(model->_diffuse_map != NULL);
-    // HACK:  not sure x or x-1 
     tt_color color = tt_make_color(model->_diffuse_map->pixels[(uv.y-1)*model->_diffuse_map->width+uv.x-1]);
     return color;
 }
@@ -170,12 +166,10 @@ void tobj_load_texture(tobj_model *model, const char* filepath) {
     tt_flip_vertically(model->_diffuse_map);
 }
 
-void _dev_log(tobj_model *model) {
-	for (int i = 0; i < model->v_capp; i++) {
-		printf("v %f %f %f\n", model->verts[i].x, model->verts[i].y, model->verts[i].z);
-	}
-	for (int i = 0; i < model->f_capp; i++) {
-		printf("f %d/-/- %d/-/- %d/-/-\n", model->faces[i][0], model->faces[i][1], model->faces[i][2]);
-	}
-	printf("v: %ld f: %ld\n", model->v_capp, model->f_capp);
+int *tobj_get_face(tobj_model *model, int idx) {
+    int *face = (int*)malloc(sizeof(int)*3);
+    for (int i = 0; i < 3; i++) {
+        face[i] = model->faces[idx][i].x;
+    }
+    return face;
 }

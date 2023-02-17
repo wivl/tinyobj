@@ -34,4 +34,6 @@ tt_color tobj_diffuse(tobj_model *model, Vec2i uv);
 
 void tobj_load_texture(tobj_model *model, const char* filepath);
 
+int *tobj_get_face(tobj_model *model, int idx);
+
 #endif
