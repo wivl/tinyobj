@@ -163,7 +163,7 @@ void tobj_load_texture(tobj_model *model, const char* filepath) {
         return ;
     }
     model->_diffuse_map = tt_load_from_file(filepath);
-    tt_flip_vertically(model->_diffuse_map);
+    // tt_flip_vertically(model->_diffuse_map);
 }
 
 int *tobj_get_face(tobj_model *model, int idx) {
@@ -172,4 +172,13 @@ int *tobj_get_face(tobj_model *model, int idx) {
         face[i] = model->faces[idx][i].x;
     }
     return face;
+}
+
+Vec2i tobj_get_uv(tobj_model *model, int iface, int nvert) {
+    int idx = model->faces[iface][nvert].y;
+    Vec2i result = {
+        .x = model->uv[idx].x * model->_diffuse_map->width,
+        .y = model->uv[idx].y * model->_diffuse_map->height
+    };
+    return result;
 }

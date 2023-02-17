@@ -36,4 +36,6 @@ void tobj_load_texture(tobj_model *model, const char* filepath);
 
 int *tobj_get_face(tobj_model *model, int idx);
 
+Vec2i tobj_get_uv(tobj_model *model, int iface, int nvert);
+
 #endif
