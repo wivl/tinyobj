@@ -99,11 +99,6 @@ tobj_model* tobj_load_model(const char *filename, bool has_texture) {
 			face[2].z = strtof(ptr, &end)-1; ptr = end+1;
 			// printf("%ld\n", l);
 
-            printf("f %d/%d/%d %d/%d/%d %d/%d/%d\n", 
-                    face[0].x, face[0].y, face[0].z,
-                    face[1].x, face[1].y, face[1].z,
-                    face[2].x, face[2].y, face[2].z);
-
 			model->faces[f_index++] = face;
 
 
@@ -159,7 +154,6 @@ tobj_model* tobj_load_model(const char *filename, bool has_texture) {
 tt_color tobj_diffuse(tobj_model *model, Vec2i uv) {
     assert(model != NULL);
     assert(model->_diffuse_map != NULL);
-    // FIX: -1
     tt_color color = tt_make_color(model->_diffuse_map->pixels[(uv.y)*model->_diffuse_map->width+uv.x]);
     return color;
 }
