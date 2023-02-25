@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
@@ -182,3 +181,32 @@ Vec2i tobj_get_uv(tobj_model *model, int iface, int nvert) {
     };
     return result;
 }
+
+Vec3f tobj_get_vert(tobj_model *model, int i) {
+    return model->verts[i];
+}
+
+Vec3f tobj_get_vert_from_face(tobj_model *model, int iface, int nthvert) {
+    return model->verts[model->faces[iface][nthvert].x];
+}
+
+Vec3f tobj_get_normal_from_map(tobj_model *model, Vec2f uvf) {
+    Vec2f uv = vec2f_make(uvf.x*model->_normal_map->width, uvf.y*model->_normal_map->height);
+    tt_color c = tt_get_color_from(model->_normal_map, uv.x, uv.y);
+    Vec3f res;
+    vec3f_set(&res, 2-0, (float)c.b/255.f*2.f - 1.f);
+    vec3f_set(&res, 2-1, (float)c.g/255.f*2.f - 1.f);
+    vec3f_set(&res, 2-2, (float)c.r/255.f*2.f - 1.f);
+    return res;
+}
+
+Vec3f tobj_get_normal(tobj_model *model, int iface, int nvert) {
+    int idx = model->faces[iface][nvert].z;
+    Vec3f temp = model->norms[idx];
+    vec3f_normalize(&temp, 1);
+    return temp;
+}
+
+
+
+

@@ -23,6 +23,8 @@ typedef struct {
     Vec3f *norms;
     Vec2f *uv;
     tt_image *_diffuse_map;
+    tt_image *_normal_map;
+    tt_image *_specular_map;
 
     int has_texture;
 
@@ -37,5 +39,13 @@ void tobj_load_texture(tobj_model *model, const char* filepath);
 int *tobj_get_face(tobj_model *model, int idx);
 
 Vec2i tobj_get_uv(tobj_model *model, int iface, int nvert);
+
+Vec3f tobj_get_vert(tobj_model *model, int i);
+
+Vec3f tobj_get_vert_from_face(tobj_model *model, int iface, int nthvert);
+
+Vec3f tobj_get_normal_from_map(tobj_model *model, Vec2f uvf);
+
+Vec3f tobj_get_normal(tobj_model *model, int iface, int nvert);
 
 #endif
