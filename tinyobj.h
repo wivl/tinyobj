@@ -34,11 +34,15 @@ tobj_model* tobj_load_model(const char *filename, bool has_texture);
 
 tt_color tobj_diffuse(tobj_model *model, Vec2i uv);
 
-void tobj_load_texture(tobj_model *model, const char* filepath);
+void tobj_load_diffusemap(tobj_model *model, const char* filepath);
+
+void tobj_load_normalmap(tobj_model *model, const char* filepath);
+
+void tobj_load_specularmap(tobj_model *model, const char* filepath);
 
 int *tobj_get_face(tobj_model *model, int idx);
 
-Vec2i tobj_get_uv(tobj_model *model, int iface, int nvert);
+Vec2f tobj_get_uv(tobj_model *model, int iface, int nvert);
 
 Vec3f tobj_get_vert(tobj_model *model, int i);
 
