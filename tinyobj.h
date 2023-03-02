@@ -32,7 +32,7 @@ typedef struct {
 
 tobj_model* tobj_load_model(const char *filename, bool has_texture);
 
-tt_color tobj_diffuse(tobj_model *model, Vec2i uv);
+tt_color tobj_diffuse(tobj_model *model, Vec2f uv);
 
 void tobj_load_diffusemap(tobj_model *model, const char* filepath);
 

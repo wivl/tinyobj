@@ -150,10 +150,14 @@ tobj_model* tobj_load_model(const char *filename, bool has_texture) {
 	return model;
 }
 
-tt_color tobj_diffuse(tobj_model *model, Vec2i uv) {
+tt_color tobj_diffuse(tobj_model *model, Vec2f uv) {
     assert(model != NULL);
     assert(model->_diffuse_map != NULL);
-    tt_color color = tt_make_color(model->_diffuse_map->pixels[(uv.y)*model->_diffuse_map->width+uv.x]);
+    Vec2i xy = vec2i_make((int)(uv.x*model->_diffuse_map->width),
+            (int)(uv.y*model->_diffuse_map->height));
+    tt_color color = tt_make_color(
+            model->_diffuse_map->pixels[(xy.y)*model->_diffuse_map->width+xy.x]
+            );
     return color;
 }
 
@@ -166,6 +170,7 @@ void tobj_load_diffusemap(tobj_model *model, const char* filepath) {
 }
 void tobj_load_normalmap(tobj_model *model, const char* filepath) {
     model->_normal_map = tt_load_from_file(filepath);
+    tt_flip_vertically(model->_normal_map);
 }
 
 void tobj_load_specularmap(tobj_model *model, const char* filepath) {
@@ -185,8 +190,8 @@ int *tobj_get_face(tobj_model *model, int idx) {
 Vec2f tobj_get_uv(tobj_model *model, int iface, int nvert) {
     int idx = model->faces[iface][nvert].y;
     Vec2f result = {
-        .x = model->uv[idx].x * model->_diffuse_map->width,
-        .y = model->uv[idx].y * model->_diffuse_map->height
+        .x = model->uv[idx].x,
+        .y = model->uv[idx].y
     };
     return result;
 }
@@ -200,14 +205,14 @@ Vec3f tobj_get_vert_from_face(tobj_model *model, int iface, int nthvert) {
 }
 
 Vec3f tobj_get_normal_from_map(tobj_model *model, Vec2f uvf) {
-    Vec2f uv = vec2f_make(uvf.x*model->_normal_map->width, uvf.y*model->_normal_map->height);
-    // FIX: uv.x, uv.y too big
-    printf("[DEBUG]uv: %f, %f\n", uv.x, uv.y);
+    Vec2i uv = vec2i_make((int)(uvf.x*model->_normal_map->width), (int)(uvf.y*model->_normal_map->height));
     tt_color c = tt_get_color_from(model->_normal_map, uv.x, uv.y);
     Vec3f res;
-    vec3f_set(&res, 2-0, (float)c.b/255.f*2.f - 1.f);
-    vec3f_set(&res, 2-1, (float)c.g/255.f*2.f - 1.f);
-    vec3f_set(&res, 2-2, (float)c.r/255.f*2.f - 1.f);
+    // color.x: 0~255
+    // normal.x: -1~1
+    vec3f_set(&res, 2, (float)c.b/255.f*2.f - 1.f);
+    vec3f_set(&res, 1, (float)c.g/255.f*2.f - 1.f);
+    vec3f_set(&res, 0, (float)c.r/255.f*2.f - 1.f);
     return res;
 }
 
