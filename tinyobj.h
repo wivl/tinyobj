@@ -52,4 +52,6 @@ Vec3f tobj_get_normal_from_map(tobj_model *model, Vec2f uvf);
 
 Vec3f tobj_get_normal(tobj_model *model, int iface, int nvert);
 
+float tobj_get_specular(tobj_model *model, Vec2f uvf);
+
 #endif

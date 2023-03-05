@@ -216,6 +216,13 @@ Vec3f tobj_get_normal_from_map(tobj_model *model, Vec2f uvf) {
     return res;
 }
 
+float tobj_get_specular(tobj_model *model, Vec2f uvf) {
+    Vec2i uv = vec2i_make((int)(uvf.x*model->_specular_map->width), (int)(uvf.y*model->_specular_map->height));
+    tt_color c = tt_get_color_from(model->_specular_map, uv.x, uv.y);
+    return c.b / 1.f;
+    
+}
+
 Vec3f tobj_get_normal(tobj_model *model, int iface, int nvert) {
     int idx = model->faces[iface][nvert].z;
     Vec3f temp = model->norms[idx];
