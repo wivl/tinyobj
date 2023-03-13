@@ -76,27 +76,18 @@ tobj_model* tobj_load_model(const char *filename, bool has_texture) {
 			Vec3i *face = (Vec3i*)malloc(sizeof(Vec3i)*3);
 
 			face[0].x = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("[DEV]f %ld/", l);
 			face[0].y = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld/", l);
 			face[0].z = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld ", l);
 
 
 			face[1].x = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld/", l);
 			face[1].y = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld/", l);
 			face[1].z = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld ", l);
 
 
 			face[2].x = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld/", l);
 			face[2].y = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld/", l);
 			face[2].z = strtof(ptr, &end)-1; ptr = end+1;
-			// printf("%ld\n", l);
 
 			model->faces[f_index++] = face;
 
@@ -141,7 +132,6 @@ tobj_model* tobj_load_model(const char *filename, bool has_texture) {
 	model->f_capp = f_index;
 	model->u_capp = u_index;
 	model->n_capp = n_index;
-	// _dev_log(model);
 
     // texture
     model->has_texture = has_texture;
@@ -166,7 +156,6 @@ void tobj_load_diffusemap(tobj_model *model, const char* filepath) {
         return ;
     }
     model->_diffuse_map = tt_load_from_file(filepath);
-    // tt_flip_vertically(model->_diffuse_map);
 }
 void tobj_load_normalmap(tobj_model *model, const char* filepath) {
     model->_normal_map = tt_load_from_file(filepath);
@@ -186,7 +175,6 @@ int *tobj_get_face(tobj_model *model, int idx) {
     return face;
 }
 
-// FIX: not sure if it has round issue
 Vec2f tobj_get_uv(tobj_model *model, int iface, int nvert) {
     int idx = model->faces[iface][nvert].y;
     Vec2f result = {
